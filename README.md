@@ -1,5 +1,6 @@
 # VUpdater
 [![Build Status](https://travis-ci.org/miho/VUpdater.svg?branch=master)](https://travis-ci.org/miho/VUpdater)
+[![Coverage Status](https://coveralls.io/repos/github/miho/VUpdater/badge.svg?branch=master)](https://coveralls.io/github/miho/VUpdater?branch=master)
 
 Updater for future VRL-based applications
 
