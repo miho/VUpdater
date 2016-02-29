@@ -18,10 +18,10 @@ before_install:
   - cd VUpdater-Core
 
 before_script:
-  - ./gradlew wrapper --gradle-version 2.11
+  - sh ./gradlew --version
 
 script:
-    - TERM=dumb ./gradlew build -S
+  - TERM=dumb ./gradlew build -S
 
 after_success:
   - TERM=dumb ./gradlew test jacocoTestReport jacocoRootReport coveralls -S
