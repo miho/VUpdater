@@ -18,7 +18,8 @@ before_install:
   - cd VUpdater-Core
 
 before_script:
-  - sh ./gradlew --version
+  - chmod +x ./gradlew
+  - ./gradlew --version
 
 script:
   - TERM=dumb ./gradlew build -S

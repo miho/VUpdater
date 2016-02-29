@@ -10,6 +10,8 @@ message Entry {
   string path = 3;
   string asc = 4;
   string sha1 = 5;
+
+  // repeated Dependency dependency = 6;
 }
 
 message Delta {
@@ -25,3 +27,8 @@ message Repository {
   repeated Entry entry = 2;
   repeated Delta delta = 3;
 }
+
+// message Dependency {
+//  string id = 1;
+//  bool optional = 2;
+// }
