@@ -14,7 +14,7 @@ The idea is to move from xtream based system to [protobuf](https://github.com/go
 
 #### Existing Solutions: ###
 
-While we might use existing solutions in the end, we will experiment with our own ideas. Currently, we only use a very small subset of popular existing solutions. And our early experiments already enable the integration of popular services, such as [bintray](https://bintray.com/).
+While we might use existing solutions in the end, we will experiment with our own ideas. Currently, we only use a very small subset of popular existing solutions.
 
 ### Design Ideas ###
 
@@ -22,4 +22,6 @@ As a start we specify a simple repository format that supports publication of so
 
 #### Dependencies ####
 
-Even thoug a dependency system is not necessary for VRL-Studio updates, it might become important for the plugin system. So, we should definitely think about dependencies. Maybe we will use existing solutions for a plugin system updater (maven, ivy,...).
+Even thoug a dependency system is not necessary for VRL-Studio updates, it might become important for the plugin system. So, we should definitely think about dependencies.
+
+Maybe we will use existing solutions for a plugin system updater (maven, ivy,...).
