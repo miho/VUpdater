@@ -80,12 +80,21 @@ task jacocoRootReport(dependsOn: jacocoRootMerge, type: JacocoReport, overwrite:
     }
 }
 
+allprojects { proj ->
+    projectsWithCoverage << proj
+}
+
+
 coveralls {
+    sourceDirs = projectsWithCoverage.sourceSets.main.allSource.srcDirs.flatten()
     jacocoReportPath = "${jacocoRootReportPath}/root.xml"
 }
 
-allprojects { proj ->
+tasks.coveralls {
+  group = 'Coverage reports'
+  description = 'Uploads the aggregated coverage report to Coveralls'
 
-    projectsWithCoverage << proj
-    
+  dependsOn jacocoRootReport
+  onlyIf { System.env.'CI' }
 }
+
