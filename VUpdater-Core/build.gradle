@@ -1,0 +1,91 @@
+apply plugin: 'java'
+
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.6.0'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.5'
+    }
+}
+
+apply plugin: 'jacoco'
+apply plugin: 'com.github.kt3k.coveralls'
+
+ext {
+    jacocoMergeExecFile  = "${buildDir}/jacoco/root.exec"
+    jacocoRootReportPath = "${buildDir}/reports/jacoco/root/"
+    projectsWithCoverage = []
+}
+
+sourceCompatibility = '1.8'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+if (!hasProperty('mainClass')) {
+    ext.mainClass = 'eu.mihosoft.vrl.vupdater.core.Main'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+    
+    compile project(':vupdater-proto')
+    compile group: 'com.google.protobuf', name: 'protobuf-java', version: '3.+'
+    compile group: 'com.google.protobuf', name: 'protobuf-java', version: '3.+', classifier: 'sources'
+    
+    compile group: 'com.google.protobuf', name: 'protobuf-java-util', version: '3.+'
+    compile group: 'com.google.protobuf', name: 'protobuf-java-util', version: '3.+', classifier: 'sources'
+    
+    compile group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.47'
+    compile group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.47', classifier: 'sources'
+    
+    compile group: 'org.bouncycastle', name: 'bcprov-ext-jdk15on', version: '1.47'
+    //    compile group: 'org.bouncycastle', name: 'bcprov-ext-jdk15on', version: '1.47', classifier: 'sources'
+    
+    compile group: 'org.bouncycastle', name: 'bcpg-jdk15on', version: '1.47'
+    compile group: 'org.bouncycastle', name: 'bcpg-jdk15on', version: '1.47', classifier: 'sources'
+    
+    compile group: 'commons-io', name: 'commons-io', version: '2.4'
+    compile group: 'commons-io', name: 'commons-io', version: '2.4', classifier: 'sources'
+
+
+
+}
+
+evaluationDependsOnChildren()
+
+task jacocoRootMerge(type: org.gradle.testing.jacoco.tasks.JacocoMerge) {
+    dependsOn = projectsWithCoverage.test
+    dependsOn = projectsWithCoverage.jacocoTestReport
+    executionData = files(projectsWithCoverage.jacocoTestReport.executionData)
+    destinationFile = file(jacocoMergeExecFile)
+}
+
+task jacocoRootReport(dependsOn: jacocoRootMerge, type: JacocoReport, overwrite: true) {
+    executionData files(projectsWithCoverage.jacocoTestReport.executionData)
+    sourceDirectories = files(projectsWithCoverage.sourceSets.main.allSource.srcDirs)
+    classDirectories = files(projectsWithCoverage.sourceSets.main.output)
+    reports {
+        xml.enabled = true
+        csv.enabled = false
+        html.enabled = true
+        html.destination = "${jacocoRootReportPath}/html"
+        xml.destination  = "${jacocoRootReportPath}/root.xml"
+    }
+}
+
+coveralls {
+    jacocoReportPath = "${jacocoRootReportPath}/root.xml"
+}
+
+allprojects { proj ->
+
+    projectsWithCoverage << proj
+    
+}

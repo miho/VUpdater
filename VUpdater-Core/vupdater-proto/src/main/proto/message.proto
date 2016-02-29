@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package eu.mihosoft.vrl.vupdater.proto;
+
+option java_multiple_files = true;
+
+message Entry {
+  string id = 1;
+  string desc = 2;
+  string path = 3;
+  string asc = 4;
+  string sha1 = 5;
+}
+
+message Delta {
+  string from = 1;
+  string to   = 2;
+  string path = 3;
+  string asc = 4;
+  string sha1 = 5;
+}
+
+message Repository {
+  string desc = 1;
+  repeated Entry entry = 2;
+  repeated Delta delta = 3;
+}

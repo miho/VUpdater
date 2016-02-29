@@ -1,0 +1,17 @@
+{
+  "desc": "This is a description.",
+  "entry": [{
+    "id": "another-pkg@0.2.3",
+    "desc": "mydesc",
+    "path": "path.zip"
+  }, {
+    "id": "another-pkg@0.2.4",
+    "desc": "mydesc",
+    "path": "path.zip"
+  }],
+  "delta": [{
+    "from": "another-pkg@0.2.3",
+    "to": "another-pkg@0.2.4",
+    "path": "path.zip"
+  }]
+}

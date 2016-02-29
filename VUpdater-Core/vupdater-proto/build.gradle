@@ -1,0 +1,42 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.7+'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'com.google.protobuf'
+
+sourceCompatibility = '1.8'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.10'
+    compile group: 'com.google.protobuf', name: 'protobuf-java', version: '3.+'
+}
+
+//sourceSets {
+//    main {
+//        java {
+//            srcDirs 'src/main/java', 'src/generated/main/java'
+//        }
+//    }
+//}
+    
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.+'
+    }
+    
+    generatedFilesBaseDir = "$projectDir/src/"
+}
+
+
+
