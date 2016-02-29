@@ -18,7 +18,7 @@ While we might use existing solutions in the end, we will experiment with our ow
 
 ### Design Ideas ###
 
-As a start we specify a simple repository format that supports publication of software packages (just like the current repository) and corresponding pre-computed delta-updates. It is obviously important to support signatures (ASC) and checksums (SHA1).
+As a start we specify a simple repository format that supports publication of software packages (just like the current repository) and corresponding pre-computed delta-updates. It is obviously important to support signatures (ASC) and checksums (SHA1). 
 
 #### Dependencies ####
 
