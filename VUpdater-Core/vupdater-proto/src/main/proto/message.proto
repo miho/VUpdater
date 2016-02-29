@@ -6,20 +6,19 @@ option java_multiple_files = true;
 
 message Entry {
   string id = 1;
-  string desc = 2;
-  string path = 3;
-  string asc = 4;
+  string name = 2;
+  string desc = 3;
+  string path = 4;
   string sha1 = 5;
 
-  // repeated Dependency dependency = 6;
+  repeated DependsOn dependency = 6;
 }
 
 message Delta {
   string from = 1;
   string to   = 2;
   string path = 3;
-  string asc = 4;
-  string sha1 = 5;
+  string sha1 = 4;
 }
 
 message Repository {
@@ -28,7 +27,7 @@ message Repository {
   repeated Delta delta = 3;
 }
 
-// message Dependency {
-//  string id = 1;
-//  bool optional = 2;
-// }
+message DependsOn {
+  string id = 1;
+  bool optional = 2;
+}

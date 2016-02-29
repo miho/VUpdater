@@ -5,11 +5,13 @@
  */
 package eu.mihosoft.vrl.vupdater.core;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -43,18 +45,16 @@ public class UpdaterTest {
     public void tearDown() {
     }
 
-    private Repository createTestRepository() {
+    private Repository createTestRepository() throws IOException {
         Repository instance = new Repository();
         instance.setDescription("This is a description.");
-        instance.addEntry(new Entry("VRL-Studio@0.4.5.6", "mydesc",
+        instance.addEntry(new Entry("vrl-studio@0.4.5.6", "VRL-Studio", "mydesc",
                 "http://vrl-studio.mihosoft.eu/releases/v0.4.5.6/VRL-Studio-Linux.zip",
-                "48cedb4775d1c4a0cd1ceb05987f4c8ff4113183",
-                "http://vrl-studio.mihosoft.eu/releases/v0.4.5.6/VRL-Studio-Linux.zip.asc"));
-        instance.addEntry(new Entry("VRL-Studio@0.4.5.7", "mydesc",
+                "48cedb4775d1c4a0cd1ceb05987f4c8ff4113183"));
+        instance.addEntry(new Entry("vrl-studio@0.4.5.7", "VRL-Studio", "mydesc",
                 "http://vrl-studio.mihosoft.eu/releases/v0.4.5.7/VRL-Studio-Linux.zip",
-                "17ca58114de926b9b90521defaf180c5bf460618",
-                "http://vrl-studio.mihosoft.eu/releases/v0.4.5.7/VRL-Studio-Linux.zip.asc"));
-        instance.addEntry(new Entry("another-pkg@0.2.5", "mydesc", "path.zip"));
+                "17ca58114de926b9b90521defaf180c5bf460618"));
+        instance.addEntry(new Entry("another-pkg@0.2.5", "Another Package", "mydesc", "path.zip"));
         instance.addDelta(new Delta("another-pkg@0.2.3", "another-pkg@0.2.4", "path.zip"));
         instance.addDelta(new Delta("another-pkg@0.2.3", "another-pkg@0.2.5", "path.zip"));
         instance.addDelta(new Delta("another-pkg@0.2.4", "another-pkg@0.2.5", "path.zip"));
@@ -68,7 +68,7 @@ public class UpdaterTest {
     @Test
     public void testDownloadRepository() throws InterruptedException, ExecutionException, IOException, TimeoutException {
         System.out.println("downloadRepository");
-        Updater u = new Updater("VRL-Studio@0.4.5.6",
+        Updater u = new Updater("vrl-studio@0.4.5.6",
                 "https://bintray.com/artifact/download/miho/Ext/repository.vrepo");
 
         DownloadResult res = u.downloadRepository(
@@ -93,15 +93,15 @@ public class UpdaterTest {
     public void testDownloadRepositoryAndVerifySHA1() throws InterruptedException, ExecutionException, TimeoutException {
         System.out.println("downloadRepositoryAndVerifySHA1");
 
-        String sha1 = "871ea91e82d0e02f095086781b3ab8821d37bcf5";
-        Updater u = new Updater("VRL-Studio@0.4.5.6",
+        String sha1 = "d52f638b4ea69213d118688105b623c3ce91a713";
+        Updater u = new Updater("vrl-studio@0.4.5.6",
                 "https://bintray.com/artifact/download/miho/Ext/repository.vrepo");
 
         DownloadResult result = u.downloadRepositoryAndVerifySHA1(null, sha1).get(30,TimeUnit.SECONDS);
         
-        assertEquals(result.hasASC(), false);
-        assertEquals(result.hasSHA1(), true);
-        assertEquals(result.isValid(), true);
+        assertFalse(result.hasASC());
+        assertTrue(result.hasSHA1());
+        assertTrue(result.isValid());
     }
 
     /**
@@ -110,7 +110,7 @@ public class UpdaterTest {
     @Test
     public void testDownloadRepositoryAndVerifyASC() throws InterruptedException, ExecutionException, IOException, TimeoutException {
         System.out.println("downloadRepositoryAndVerifyASC");
-        Updater u = new Updater("VRL-Studio@0.4.5.6",
+        Updater u = new Updater("vrl-studio@0.4.5.6",
                 "https://bintray.com/artifact/download/miho/Ext/repository.vrepo",
                 "http://keys.mihosoft.eu/bintray-key.asc");
 
@@ -158,7 +158,6 @@ public class UpdaterTest {
      */
     @Test
     public void testDownloadAndVerifyASC() throws InterruptedException, ExecutionException, TimeoutException {
-        System.out.println("downloadAndVerifyASC");
         String url = "https://bintray.com/artifact/download/miho/Ext/test-update-0.1.zip";
         String publicKeyURL = "http://keys.mihosoft.eu/bintray-key.asc";
 
@@ -177,7 +176,6 @@ public class UpdaterTest {
      */
     @Test
     public void testDownload_String() throws InterruptedException, ExecutionException, TimeoutException {
-        System.out.println("download");
         String url = "https://bintray.com/artifact/download/miho/Ext/test-update-0.1.zip";
         Updater instance = new Updater("", "");
 
@@ -193,7 +191,6 @@ public class UpdaterTest {
      */
     @Test
     public void testDownload_String_BiConsumer() throws InterruptedException, ExecutionException, TimeoutException {
-        System.out.println("download");
         String url = "https://bintray.com/artifact/download/miho/Ext/test-update-0.1.zip";
 
         int[] statusArr = {-1};

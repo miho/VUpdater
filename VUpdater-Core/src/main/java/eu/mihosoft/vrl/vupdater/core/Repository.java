@@ -322,7 +322,7 @@ public final class Repository {
 
     private List<Entry> searchForPossibleUpdates(String id) {
 
-        Entry currentVersion = new Entry(id, "", "");
+        Entry currentVersion = new Entry(id, "", "", "");
 
         PluginIdentifier pId = new PluginIdentifier(
                 currentVersion.getName(),

@@ -58,7 +58,7 @@ public class RepositoryTest {
     @Test
     public void testClone() {
         Repository r1 = new Repository();
-        Entry e1 = new Entry("my-package@0.3.4", "...", "path.zip");
+        Entry e1 = new Entry("my-package@0.3.4", "My Package", "...", "path.zip");
         Delta d1 = new Delta("my-pkg@0.4.5", "my-pkg@1.2.3", "path1.zip");
         r1.addEntry(e1);
         r1.addDelta(d1);
@@ -77,8 +77,8 @@ public class RepositoryTest {
     @Test
     public void testGetEntries() {
         Repository instance = new Repository();
-        Entry e1 = new Entry("my-package@0.3.4", "...", "path.zip");
-        Entry e2 = new Entry("your-package@1.3.4", "...2", "path2.zip");
+        Entry e1 = new Entry("my-package@0.3.4", "My Package", "...", "path.zip");
+        Entry e2 = new Entry("your-package@1.3.4", "My Package",  "...2", "path2.zip");
         instance.addEntry(e1);
         instance.addEntry(e2);
         List<Entry> expResult = Arrays.asList(new Entry[]{e1, e2});
@@ -91,7 +91,7 @@ public class RepositoryTest {
      */
     @Test
     public void testAddEntry() {
-        Entry e = new Entry("my-package@0.3.4", "...", "path.zip");
+        Entry e = new Entry("my-package@0.3.4","My Package" , "...", "path.zip");
         Repository instance = new Repository();
         instance.addEntry(e);
 
@@ -104,7 +104,7 @@ public class RepositoryTest {
      */
     @Test
     public void testRemoveEntry_Entry() {
-        Entry e = new Entry("my-package@0.3.4", "...", "path.zip");
+        Entry e = new Entry("my-package@0.3.4", "My Package", "...", "path.zip");
         Repository instance = new Repository();
         instance.addEntry(e);
 
@@ -124,7 +124,7 @@ public class RepositoryTest {
      */
     @Test
     public void testRemoveEntry_String() {
-        Entry e = new Entry("my-package@0.3.4", "...", "path.zip");
+        Entry e = new Entry("my-package@0.3.4", "My Package",  "...", "path.zip");
         Repository instance = new Repository();
         instance.addEntry(e);
 
@@ -145,7 +145,7 @@ public class RepositoryTest {
     @Test
     public void testGetEntry() {
         int i = 0;
-        Entry e = new Entry("my-package@0.3.4", "...", "path.zip");
+        Entry e = new Entry("my-package@0.3.4", "My Package", "...", "path.zip");
         Repository instance = new Repository();
         instance.addEntry(e);
         Entry result = instance.getEntry(i);
@@ -159,7 +159,7 @@ public class RepositoryTest {
     public void testHasEntry() {
 
         String id1 = "my-package@0.3.4";
-        Entry e = new Entry("my-package@0.3.4", "...", "path.zip");
+        Entry e = new Entry("my-package@0.3.4", "My Package", "...", "path.zip");
         Repository instance = new Repository();
         instance.addEntry(e);
         boolean expResult1 = true;
@@ -348,7 +348,6 @@ public class RepositoryTest {
      */
     @Test
     public void testGetDescription() {
-        System.out.println("getDescription");
         Repository instance = new Repository();
         instance.setDescription("myDesc");
         String expResult = "myDesc";
@@ -361,7 +360,6 @@ public class RepositoryTest {
      */
     @Test
     public void testSetDescription() {
-        System.out.println("getDescription");
         Repository instance = new Repository();
         instance.setDescription("myDesc");
         String expResult = "myDesc";
@@ -376,21 +374,21 @@ public class RepositoryTest {
     public void testEquals() {
         Repository instance1 = new Repository();
         instance1.setDescription("This is a description.");
-        instance1.addEntry(new Entry("another-pkg@0.2.3", "mydesc", "path.zip"));
-        instance1.addEntry(new Entry("another-pkg@0.2.4", "mydesc", "path.zip"));
+        instance1.addEntry(new Entry("another-pkg@0.2.3", "My Package", "mydesc", "path.zip"));
+        instance1.addEntry(new Entry("another-pkg@0.2.4", "My Package", "mydesc", "path.zip"));
         instance1.addDelta(new Delta("another-pkg@0.2.3", "another-pkg@0.2.4", "path.zip"));
 
         Repository instance2 = new Repository();
         instance2.setDescription("This is a description.");
-        instance2.addEntry(new Entry("another-pkg@0.2.3", "mydesc test123", "path.zip"));
-        instance2.addEntry(new Entry("another-pkg@0.2.4", "mydesc2", "path.zip"));
+        instance2.addEntry(new Entry("another-pkg@0.2.3", "My Package", "mydesc test123", "path.zip"));
+        instance2.addEntry(new Entry("another-pkg@0.2.4", "My Package", "mydesc2", "path.zip"));
         instance2.addDelta(new Delta("another-pkg@0.2.3", "another-pkg@0.2.4", "path.zip"));
 
         Repository instance3 = new Repository();
         instance2.setDescription("This is a description.");
-        instance2.addEntry(new Entry("another-pkg@0.2.2", "mydesc", "path.zip"));
-        instance2.addEntry(new Entry("another-pkg@0.2.3", "mydesc test123", "path.zip"));
-        instance2.addEntry(new Entry("another-pkg@0.2.4", "mydesc2", "path.zip"));
+        instance2.addEntry(new Entry("another-pkg@0.2.2", "My Package", "mydesc", "path.zip"));
+        instance2.addEntry(new Entry("another-pkg@0.2.3", "My Package", "mydesc test123", "path.zip"));
+        instance2.addEntry(new Entry("another-pkg@0.2.4", "My Package", "mydesc2", "path.zip"));
         instance2.addDelta(new Delta("another-pkg@0.2.3", "another-pkg@0.2.4", "path.zip"));
 
         assertEquals(instance1.equals(instance3), false);
@@ -429,7 +427,9 @@ public class RepositoryTest {
     @Test
     public void testSave_File_Format() throws Exception {
         saveAndCompareFileTest(Format.BINARY, "repo.vrepo");
+        FileUtils.copyFile(repoFile, new File("C:\\Users\\miho\\Documents\\tmp\\repo.vrepo"));
         saveAndCompareFileTest(Format.JSON, "repo.vrepo.json");
+        FileUtils.copyFile(repoFile, new File("C:\\Users\\miho\\Documents\\tmp\\repo.vrepo.json"));
     }
 
     /**
@@ -439,8 +439,8 @@ public class RepositoryTest {
     public void testLoad_InputStream_Format() throws Exception {
         Repository instance1 = new Repository();
         instance1.setDescription("This is a description.");
-        instance1.addEntry(new Entry("another-pkg@0.2.3", "mydesc", "path.zip"));
-        instance1.addEntry(new Entry("another-pkg@0.2.4", "mydesc", "path.zip"));
+        instance1.addEntry(new Entry("another-pkg@0.2.3", "My Package", "mydesc", "path.zip"));
+        instance1.addEntry(new Entry("another-pkg@0.2.4", "My Package", "mydesc", "path.zip"));
         instance1.addDelta(new Delta("another-pkg@0.2.3", "another-pkg@0.2.4", "path.zip"));
 
         Repository instance2 = new Repository();
@@ -465,8 +465,8 @@ public class RepositoryTest {
     public void testLoad_File_Format() throws Exception {
         Repository instance1 = new Repository();
         instance1.setDescription("This is a description.");
-        instance1.addEntry(new Entry("another-pkg@0.2.3", "mydesc", "path.zip"));
-        instance1.addEntry(new Entry("another-pkg@0.2.4", "mydesc", "path.zip"));
+        instance1.addEntry(new Entry("another-pkg@0.2.3", "My Package", "mydesc", "path.zip"));
+        instance1.addEntry(new Entry("another-pkg@0.2.4", "My Package", "mydesc", "path.zip"));
         instance1.addDelta(new Delta("another-pkg@0.2.3", "another-pkg@0.2.4", "path.zip"));
 
         Repository instance2 = new Repository();
@@ -498,8 +498,8 @@ public class RepositoryTest {
     public void testLoad_File() throws Exception {
         Repository instance1 = new Repository();
         instance1.setDescription("This is a description.");
-        instance1.addEntry(new Entry("another-pkg@0.2.3", "mydesc", "path.zip"));
-        instance1.addEntry(new Entry("another-pkg@0.2.4", "mydesc", "path.zip"));
+        instance1.addEntry(new Entry("another-pkg@0.2.3", "My Package", "mydesc", "path.zip"));
+        instance1.addEntry(new Entry("another-pkg@0.2.4", "My Package", "mydesc", "path.zip"));
         instance1.addDelta(new Delta("another-pkg@0.2.3", "another-pkg@0.2.4", "path.zip"));
 
         // test load binary file
@@ -540,8 +540,8 @@ public class RepositoryTest {
 
         Repository instance = new Repository();
         instance.setDescription("This is a description.");
-        instance.addEntry(new Entry("another-pkg@0.2.3", "mydesc", "path.zip"));
-        instance.addEntry(new Entry("another-pkg@0.2.4", "mydesc", "path.zip"));
+        instance.addEntry(new Entry("another-pkg@0.2.3", "My Package", "mydesc", "path.zip"));
+        instance.addEntry(new Entry("another-pkg@0.2.4", "My Package", "mydesc", "path.zip"));
         instance.addDelta(new Delta("another-pkg@0.2.3", "another-pkg@0.2.4", "path.zip"));
         instance.save(o, format);
 
@@ -559,8 +559,8 @@ public class RepositoryTest {
 
         Repository instance = new Repository();
         instance.setDescription("This is a description.");
-        instance.addEntry(new Entry("another-pkg@0.2.3", "mydesc", "path.zip"));
-        instance.addEntry(new Entry("another-pkg@0.2.4", "mydesc", "path.zip"));
+        instance.addEntry(new Entry("another-pkg@0.2.3", "My Package", "mydesc", "path.zip"));
+        instance.addEntry(new Entry("another-pkg@0.2.4", "My Package", "mydesc", "path.zip"));
         instance.addDelta(new Delta("another-pkg@0.2.3", "another-pkg@0.2.4", "path.zip"));
         instance.save(repoFile, format);
 
@@ -581,9 +581,9 @@ public class RepositoryTest {
     public void testFindDeltaUpdateFor() {
         Repository instance = new Repository();
         instance.setDescription("This is a description.");
-        instance.addEntry(new Entry("another-pkg@0.2.3", "mydesc", "path.zip"));
-        instance.addEntry(new Entry("another-pkg@0.2.4", "mydesc", "path.zip"));
-        instance.addEntry(new Entry("another-pkg@0.2.5", "mydesc", "path.zip"));
+        instance.addEntry(new Entry("another-pkg@0.2.3", "My Package", "mydesc", "path.zip"));
+        instance.addEntry(new Entry("another-pkg@0.2.4", "My Package", "mydesc", "path.zip"));
+        instance.addEntry(new Entry("another-pkg@0.2.5", "My Package", "mydesc", "path.zip"));
         instance.addDelta(new Delta("another-pkg@0.2.3", "another-pkg@0.2.4", "path.zip"));
         instance.addDelta(new Delta("another-pkg@0.2.3", "another-pkg@0.2.5", "path.zip"));
         instance.addDelta(new Delta("another-pkg@0.2.4", "another-pkg@0.2.5", "path.zip"));
@@ -610,13 +610,13 @@ public class RepositoryTest {
     public void testFindUpdateFor() {
         Repository instance = new Repository();
         instance.setDescription("This is a description.");
-        instance.addEntry(new Entry("another-pkg@0.2.3", "mydesc", "path.zip"));
-        instance.addEntry(new Entry("another-pkg@0.2.4", "mydesc", "path.zip"));
+        instance.addEntry(new Entry("another-pkg@0.2.3", "My Package", "mydesc", "path.zip"));
+        instance.addEntry(new Entry("another-pkg@0.2.4", "My Package", "mydesc", "path.zip"));
         instance.addDelta(new Delta("another-pkg@0.2.3", "another-pkg@0.2.4", "path.zip"));
 
         Optional<Entry> update1 = instance.findUpdateFor("another-pkg@0.2.3");
         Assert.assertTrue(update1.isPresent());
-        Assert.assertEquals(update1.get(), new Entry("another-pkg@0.2.4", "mydesc", "path.zip"));
+        Assert.assertEquals(update1.get(), new Entry("another-pkg@0.2.4", "My Package", "mydesc", "path.zip"));
 
         Optional<Entry> update2 = instance.findUpdateFor("another-pkg@0.2.4");
         Assert.assertFalse(update2.isPresent());

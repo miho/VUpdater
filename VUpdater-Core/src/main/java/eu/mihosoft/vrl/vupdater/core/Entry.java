@@ -17,28 +17,24 @@ public final class Entry {
     private final String desc;
     private final String path;
     private final String sha1;
-    private final String asc;
+    private final String fullName;
     private final PluginIdentifier pId;
 
-    public Entry(String id, String desc, String path, String sha1, String asc) {
+    public Entry(String id, String fullName, String desc, String path, String sha1) {
         this.id = id;
         this.pId = verifyId(id);
         this.desc = desc;
         this.path = path;
         this.sha1 = sha1;
-        this.asc = asc;
+        this.fullName = fullName;
     }
 
     public Entry(Entry other) {
-        this(other.id, other.desc, other.path, other.sha1, other.asc);
+        this(other.id, other.fullName, other.desc, other.path, other.sha1);
     }
 
-    public Entry(String id, String desc, String path, String sha1) {
-        this(id, desc, path, sha1, "");
-    }
-
-    public Entry(String id, String desc, String path) {
-        this(id, desc, path, "");
+    public Entry(String id, String fullName, String desc, String path) {
+        this(id, fullName, desc, path, "");
     }
 
     public String getName() {
@@ -78,10 +74,10 @@ public final class Entry {
     }
 
     /**
-     * @return the asc
+     * @return the fullName
      */
-    public String getAsc() {
-        return asc;
+    public String getFullName() {
+        return fullName;
     }
 
     @Override
@@ -112,14 +108,15 @@ public final class Entry {
     eu.mihosoft.vrl.vupdater.proto.Entry toProto() {
         return eu.mihosoft.vrl.vupdater.proto.Entry.newBuilder().
                 setId(getId()).
+                setName(getFullName()).
                 setDesc(getDesc()).
                 setPath(getPath()).
                 setSha1(getSha1()).
-                setAsc(getAsc()).build();
+                build();
     }
 
     static Entry fromProto(eu.mihosoft.vrl.vupdater.proto.Entry e) {
-        return new Entry(e.getId(), e.getDesc(), e.getPath(), e.getSha1(), e.getAsc());
+        return new Entry(e.getId(), e.getName(), e.getDesc(), e.getPath(), e.getSha1());
     }
 
     @Override

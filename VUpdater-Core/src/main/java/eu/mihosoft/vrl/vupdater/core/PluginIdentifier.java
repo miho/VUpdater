@@ -67,7 +67,7 @@ final class PluginIdentifier {
      * Pattern to match plugin names.
      */
     public static final Pattern PLUGIN_NAME =
-            Pattern.compile("[A-Za-z0-9-+_]+");
+            Pattern.compile("[a-z0-9-+_:]+");
 
     /**
      * Constructor.

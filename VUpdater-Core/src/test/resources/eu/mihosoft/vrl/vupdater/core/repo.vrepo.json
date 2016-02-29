@@ -2,10 +2,12 @@
   "desc": "This is a description.",
   "entry": [{
     "id": "another-pkg@0.2.3",
+    "name": "My Package",
     "desc": "mydesc",
     "path": "path.zip"
   }, {
     "id": "another-pkg@0.2.4",
+    "name": "My Package",
     "desc": "mydesc",
     "path": "path.zip"
   }],

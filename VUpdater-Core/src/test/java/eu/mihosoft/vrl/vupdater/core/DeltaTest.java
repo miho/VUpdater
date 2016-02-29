@@ -42,7 +42,6 @@ public class DeltaTest {
     public void testClone() {
 
         // only equal test, since delta is immutable
-        
         Delta instance = new Delta("pkg-abc@1.2.0", "pkg-abc@1.3.0", "http://nopath/delta.zip");
         Delta other = new Delta(instance);
 
@@ -95,20 +94,6 @@ public class DeltaTest {
     }
 
     /**
-     * Test of getAsc method, of class Delta.
-     */
-    @Test
-    public void testGetAsc() {
-        Delta instance = new Delta("pkg-abc@1.2.0", "pkg-abc@1.3.0",
-                "http://nopath/delta.zip",
-                "4b8fd1b2b9318cf989634e15af0e460a3bc3791a",
-                "http://nopath/delta.zip.asc");
-        String expResult = "http://nopath/delta.zip.asc";
-        String result = instance.getAsc();
-        assertEquals(expResult, result);
-    }
-
-    /**
      * Test of hashCode method, of class Delta.
      */
     @Test
@@ -146,7 +131,7 @@ public class DeltaTest {
         String sha1 = "4b8fd1b2b9318cf989634e15af0e460a3bc3791a";
         String asc = "http://nopath/delta.zip.asc";
 
-        Delta d1 = new Delta(from, to, path, sha1, asc);
+        Delta d1 = new Delta(from, to, path, sha1);
 
         eu.mihosoft.vrl.vupdater.proto.Delta expResult
                 = eu.mihosoft.vrl.vupdater.proto.Delta.newBuilder().
@@ -154,7 +139,7 @@ public class DeltaTest {
                 setTo(to).
                 setPath(path).
                 setSha1(sha1).
-                setAsc(asc).build();
+                build();
 
         assertEquals(expResult, d1.toProto());
     }
@@ -171,14 +156,14 @@ public class DeltaTest {
         String sha1 = "4b8fd1b2b9318cf989634e15af0e460a3bc3791a";
         String asc = "http://nopath/delta.zip.asc";
 
-        Delta expResult = new Delta(from, to, path, sha1, asc);
+        Delta expResult = new Delta(from, to, path, sha1);
         eu.mihosoft.vrl.vupdater.proto.Delta protoRes
                 = eu.mihosoft.vrl.vupdater.proto.Delta.newBuilder().
                 setFrom(from).
                 setTo(to).
                 setPath(path).
                 setSha1(sha1).
-                setAsc(asc).build();
+                build();
         Delta result = Delta.fromProto(protoRes);
 
         assertEquals(expResult, result);

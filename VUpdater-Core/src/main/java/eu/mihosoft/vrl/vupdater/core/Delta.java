@@ -17,26 +17,9 @@ public final class Delta {
     private final String to;
     private final String path;
     private final String sha1;
-    private final String asc;
 
     public Delta(Delta other) {
-        this(other.from, other.to, other.path, other.sha1, other.asc);
-    }
-
-    public Delta(String from, String to, String path, String sha1, String asc) {
-        this.from = from;
-        this.to = to;
-        this.path = path;
-        this.sha1 = sha1;
-        this.asc = asc;
-    }
-
-    public Delta(String from, String to, String path) {
-        this.from = from;
-        this.to = to;
-        this.path = path;
-        this.sha1 = "";
-        this.asc = "";
+        this(other.from, other.to, other.path, other.sha1);
     }
 
     public Delta(String from, String to, String path, String sha1) {
@@ -44,8 +27,15 @@ public final class Delta {
         this.to = to;
         this.path = path;
         this.sha1 = sha1;
-        this.asc = "";
     }
+
+    public Delta(String from, String to, String path) {
+        this.from = from;
+        this.to = to;
+        this.path = path;
+        this.sha1 = "";
+    }
+
 
     /**
      * @return the from
@@ -73,13 +63,6 @@ public final class Delta {
      */
     public String getSha1() {
         return sha1;
-    }
-
-    /**
-     * @return the asc
-     */
-    public String getAsc() {
-        return asc;
     }
 
     @Override
@@ -117,12 +100,12 @@ public final class Delta {
                 setTo(getTo()).
                 setPath(getPath()).
                 setSha1(getSha1()).
-                setAsc(getAsc()).build();
+                build();
     }
 
     static Delta fromProto(eu.mihosoft.vrl.vupdater.proto.Delta d) {
         return new Delta(d.getFrom(), d.getTo(),
-                d.getPath(), d.getSha1(), d.getAsc());
+                d.getPath(), d.getSha1());
     }
 
     @Override
