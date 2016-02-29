@@ -58,6 +58,8 @@ dependencies {
 
 }
 
+projectsWithCoverage << rootProject
+
 evaluationDependsOnChildren()
 
 task jacocoRootMerge(type: org.gradle.testing.jacoco.tasks.JacocoMerge) {
@@ -70,7 +72,7 @@ task jacocoRootMerge(type: org.gradle.testing.jacoco.tasks.JacocoMerge) {
 task jacocoRootReport(dependsOn: jacocoRootMerge, type: JacocoReport, overwrite: true) {
     executionData files(projectsWithCoverage.jacocoTestReport.executionData)
     sourceDirectories = files(projectsWithCoverage.sourceSets.main.allSource.srcDirs)
-    classDirectories = files(projectsWithCoverage.sourceSets.main.output)
+    classDirectories = files(projectsWithCoverage.sourceSets.main.output.classesDir)
     reports {
         xml.enabled = true
         csv.enabled = false
@@ -79,11 +81,6 @@ task jacocoRootReport(dependsOn: jacocoRootMerge, type: JacocoReport, overwrite:
         xml.destination  = "${jacocoRootReportPath}/root.xml"
     }
 }
-
-allprojects { proj ->
-    projectsWithCoverage << proj
-}
-
 
 coveralls {
     sourceDirs = projectsWithCoverage.sourceSets.main.allSource.srcDirs.flatten()
