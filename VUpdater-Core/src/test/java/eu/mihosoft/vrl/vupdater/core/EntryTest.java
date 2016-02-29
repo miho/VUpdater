@@ -222,7 +222,7 @@ public class EntryTest {
 
         eu.mihosoft.vrl.vupdater.proto.Entry expResult
                 = eu.mihosoft.vrl.vupdater.proto.Entry.newBuilder().
-                setId(id).setDesc(desc).setPath(path).setSha1(sha1).
+                setId(id).setName(name).setDesc(desc).setPath(path).setSha1(sha1).
                 build();
         eu.mihosoft.vrl.vupdater.proto.Entry result = instance.toProto();
         assertEquals(expResult, result);
