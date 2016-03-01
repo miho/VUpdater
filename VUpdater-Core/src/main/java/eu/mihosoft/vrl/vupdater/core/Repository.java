@@ -334,25 +334,11 @@ public final class Repository {
         // search for possible updates
         for (Entry e : getEntries()) {
 
-            if (e.getName() == null || e.getVersion() == null) {
-                System.err.println(" --> update name or version null!");
-                continue;
-            }
-
             if (!e.getName().trim().equals(pId.getName())) {
                 continue;
             }
 
-            System.out.println("version: " + e.getVersion());
-
             VersionInfo vInfo = new VersionInfo(e.getVersion());
-
-            if (!vInfo.isVersionValid()) {
-                System.err.println(
-                        " --> version invalid: name="
-                        + e.getName() + ", version= " + e.getVersion());
-                continue;
-            }
 
             boolean bigger = vInfo.compareTo(pId.getVersion()) > 0;
             boolean equal = vInfo.compareTo(pId.getVersion()) == 0;

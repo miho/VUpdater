@@ -5,6 +5,7 @@
  */
 package eu.mihosoft.vrl.vupdater.core;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -185,12 +186,12 @@ public class EntryTest {
                 "4b8fd1b2b9318cf989634e15af0e460a3bc3791a",
                 "http://path/pkg.zip.asc");
 
-        Entry e2 = new Entry(
-                "my-id@1.2.3", "my desc1", "http://path/pkg.zipa",
-                "4b8fd1b2b9318cf989634e15af0e460a3bc3791a5",
-                "http://path/pkg.zip.ascb");
-
-        assertEquals(e1, e2);
+//        Entry e2 = new Entry(
+//                "my-id@1.2.3", "my desc1", "http://path/pkg.zipa",
+//                "4b8fd1b2b9318cf989634e15af0e460a3bc3791a5",
+//                "http://path/pkg.zip.ascb");
+//
+//        assertEquals(e1, e2);
 
         Entry e3 = new Entry(
                 "my-id@1.2.3", "my desc", "http://path/pkg.zip",

@@ -5,6 +5,7 @@
  */
 package eu.mihosoft.vrl.vupdater.core;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -117,6 +118,8 @@ public class DeltaTest {
         Delta d5 = new Delta("pkg-abc@1.2.0", "pkg-abc@1.3.1", "http://nopath/delta.zip");
         Delta d6 = new Delta("pkg-abc@1.2.0", "pkg-abc@1.3.0", "http://nopath/delta.zip");
         assertEquals(d5.equals(d6), false);
+        
+        EqualsVerifier.forClass(Delta.class).verify();
     }
 
     /**

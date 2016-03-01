@@ -14,6 +14,7 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
@@ -392,6 +393,10 @@ public class RepositoryTest {
         instance2.addDelta(new Delta("another-pkg@0.2.3", "another-pkg@0.2.4", "path.zip"));
 
         assertEquals(instance1.equals(instance3), false);
+
+        
+        Assert.assertFalse(instance1.equals(null));
+        Assert.assertFalse(instance1.equals(1));
     }
 
     /**

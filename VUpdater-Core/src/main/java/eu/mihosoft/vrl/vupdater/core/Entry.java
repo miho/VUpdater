@@ -99,10 +99,8 @@ public final class Entry {
             return false;
         }
         final Entry other = (Entry) obj;
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        return true;
+        
+        return Objects.equals(this.id, other.id);
     }
 
     eu.mihosoft.vrl.vupdater.proto.Entry toProto() {

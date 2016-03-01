@@ -17,8 +17,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.Checksum;
-import org.apache.commons.io.FileUtils;
 
 /**
  * Downloads a file from the specified url. This class can be observed (for
