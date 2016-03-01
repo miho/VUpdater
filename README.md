@@ -12,7 +12,7 @@ The current updater for VRL-Studio does not support pre-computed delta updates a
 
 #### File formats: ####
 
-The idea is to move from xtream based system to [protobuf](https://github.com/google/protobuf) which allows to specify an efficient binary format (and optionally a slightly more verbose json based format) with only one specification file. Protobuf can then generate a serializable data model for many popular languages (Java, C++, Python, Go, ...). This would allow us to reuse the file format for projects in otherlanguages.
+The idea is to move from xtream based system to [protobuf](https://github.com/google/protobuf) which allows to specify an efficient binary format (and optionally a slightly more verbose json based format) with only one specification file. Protobuf can then generate a serializable data model for many popular languages (Java, C++, Python, Go, ...). This would allow us to reuse the file format for projects in other languages.
 
 #### Existing Solutions: ###
 
@@ -24,6 +24,6 @@ As a start we specify a simple repository format that supports publication of so
 
 #### Dependencies ####
 
-Even thoug a dependency system is not necessary for VRL-Studio updates, it might become important for the plugin system. So, we should definitely think about dependencies.
+Even though a dependency system is not necessary for VRL-Studio updates, it might become important for the plugin system. So, we should definitely think about dependencies.
 
 Maybe we will use existing solutions for a plugin system updater (maven, ivy,...).
