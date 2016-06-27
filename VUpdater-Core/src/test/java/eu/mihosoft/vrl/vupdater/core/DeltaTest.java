@@ -146,16 +146,17 @@ public class DeltaTest {
         String from = "pkg-abc@1.2.0";
         String to = "pkg-abc@1.3.0";
         String path = "http://nopath/delta.zip";
+        long size = 1024L;
         String sha1 = "4b8fd1b2b9318cf989634e15af0e460a3bc3791a";
-        String asc = "http://nopath/delta.zip.asc";
 
-        Delta d1 = new Delta(from, to, path, 1024L, sha1);
+        Delta d1 = new Delta(from, to, path, size, sha1);
 
         eu.mihosoft.vrl.vupdater.proto.Delta expResult
                 = eu.mihosoft.vrl.vupdater.proto.Delta.newBuilder().
                 setFrom(from).
                 setTo(to).
                 setPath(path).
+                setSize(size).
                 setSha1(sha1).
                 build();
 
