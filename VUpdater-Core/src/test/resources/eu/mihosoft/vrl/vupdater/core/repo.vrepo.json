@@ -4,16 +4,19 @@
     "id": "another-pkg@0.2.3",
     "name": "My Package",
     "desc": "mydesc",
-    "path": "path.zip"
+    "path": "path.zip",
+    "size": "1024"
   }, {
     "id": "another-pkg@0.2.4",
     "name": "My Package",
     "desc": "mydesc",
-    "path": "path.zip"
+    "path": "path.zip",
+    "size": "1024"
   }],
   "delta": [{
     "from": "another-pkg@0.2.3",
     "to": "another-pkg@0.2.4",
-    "path": "path.zip"
+    "path": "path.zip",
+    "size": "1024"
   }]
 }

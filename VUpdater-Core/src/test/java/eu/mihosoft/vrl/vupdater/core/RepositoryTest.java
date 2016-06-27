@@ -47,6 +47,7 @@ public class RepositoryTest {
     @Before
     public void setUp() throws IOException {
         repoFile = new File(Files.createTempDir(), "repo.vrepo");
+        System.out.println("REPO_FILE: " + repoFile);
     }
 
     @After
@@ -419,10 +420,8 @@ public class RepositoryTest {
      */
     @Test
     public void testSave_OutputStream_Format() throws Exception {
-
         saveAndCompareStreamTest(Format.BINARY, "repo.vrepo");
         saveAndCompareStreamTest(Format.JSON, "repo.vrepo.json");
-
     }
 
     /**
@@ -546,6 +545,11 @@ public class RepositoryTest {
         instance.addEntry(new Entry("another-pkg@0.2.4", "My Package", "mydesc", "path.zip", 1024L));
         instance.addDelta(new Delta("another-pkg@0.2.3", "another-pkg@0.2.4", "path.zip", 1024L));
         instance.save(o, format);
+        
+        // generate test files (for test/resources/...)
+        // needs to be done after content/format change
+//        instance.save(new File("repo.vrepo"), Format.BINARY);
+//        instance.save(new File("repo.vrepo.json"), Format.JSON);
 
         byte[] bytes = IOUtils.toByteArray(RepositoryTest.class.
                 getResourceAsStream(origName));
