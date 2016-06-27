@@ -17,24 +17,26 @@ public final class Entry {
     private final String desc;
     private final String path;
     private final String sha1;
+    private final long size;
     private final String fullName;
     private final PluginIdentifier pId;
 
-    public Entry(String id, String fullName, String desc, String path, String sha1) {
+    public Entry(String id, String fullName, String desc, String path, long size, String sha1) {
         this.id = id;
         this.pId = verifyId(id);
         this.desc = desc;
         this.path = path;
         this.sha1 = sha1;
         this.fullName = fullName;
+        this.size = size;
     }
 
     public Entry(Entry other) {
-        this(other.id, other.fullName, other.desc, other.path, other.sha1);
+        this(other.id, other.fullName, other.desc, other.path, other.size, other.sha1);
     }
 
-    public Entry(String id, String fullName, String desc, String path) {
-        this(id, fullName, desc, path, "");
+    public Entry(String id, String fullName, String desc, String path, long size) {
+        this(id, fullName, desc, path, size, "");
     }
 
     public String getName() {
@@ -109,12 +111,13 @@ public final class Entry {
                 setName(getFullName()).
                 setDesc(getDesc()).
                 setPath(getPath()).
+                setSize(getSize()).
                 setSha1(getSha1()).
                 build();
     }
 
     static Entry fromProto(eu.mihosoft.vrl.vupdater.proto.Entry e) {
-        return new Entry(e.getId(), e.getName(), e.getDesc(), e.getPath(), e.getSha1());
+        return new Entry(e.getId(), e.getName(), e.getDesc(), e.getPath(), e.getSize(), e.getSha1());
     }
 
     @Override
@@ -134,5 +137,12 @@ public final class Entry {
         
         return new PluginIdentifier(parts[0], parts[1]);
 
+    }
+
+    /**
+     * @return the size in bytes
+     */
+    public long getSize() {
+        return size;
     }
 }

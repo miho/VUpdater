@@ -16,23 +16,26 @@ public final class Delta {
     private final String from;
     private final String to;
     private final String path;
+    private final long size;
     private final String sha1;
 
     public Delta(Delta other) {
-        this(other.from, other.to, other.path, other.sha1);
+        this(other.from, other.to, other.path, other.size, other.sha1);
     }
 
-    public Delta(String from, String to, String path, String sha1) {
+    public Delta(String from, String to, String path, long size, String sha1) {
         this.from = from;
         this.to = to;
         this.path = path;
+        this.size = size;
         this.sha1 = sha1;
     }
 
-    public Delta(String from, String to, String path) {
+    public Delta(String from, String to, String path, long size) {
         this.from = from;
         this.to = to;
         this.path = path;
+        this.size = size;
         this.sha1 = "";
     }
 
@@ -99,18 +102,26 @@ public final class Delta {
                 setFrom(getFrom()).
                 setTo(getTo()).
                 setPath(getPath()).
+                setSize(getSize()).
                 setSha1(getSha1()).
                 build();
     }
 
     static Delta fromProto(eu.mihosoft.vrl.vupdater.proto.Delta d) {
         return new Delta(d.getFrom(), d.getTo(),
-                d.getPath(), d.getSha1());
+                d.getPath(), d.getSize(), d.getSha1());
     }
 
     @Override
     public String toString() {
         return toProto().toString();
+    }
+
+    /**
+     * @return the size
+     */
+    public long getSize() {
+        return size;
     }
 
 }

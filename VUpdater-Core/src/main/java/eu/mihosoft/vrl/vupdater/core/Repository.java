@@ -179,19 +179,17 @@ public final class Repository {
     public void save(OutputStream o, Format format) throws IOException {
         eu.mihosoft.vrl.vupdater.proto.Repository r = toProto();
 
-        if (null != format) {
-            switch (format) {
-                case BINARY:
-                    r.writeTo(o);
-                    break;
-                case JSON:
-                    try (OutputStreamWriter outWriter = new OutputStreamWriter(o)) {
-                        JsonFormat.printer().appendTo(r, outWriter);
-                    }
-                    break;
-                default:
-                    throw new RuntimeException("Format " + format + " not supported!");
-            }
+        switch (format) {
+            case BINARY:
+                r.writeTo(o);
+                break;
+            case JSON:
+                try (OutputStreamWriter outWriter = new OutputStreamWriter(o)) {
+                    JsonFormat.printer().appendTo(r, outWriter);
+                }
+                break;
+            default:
+                throw new RuntimeException("Format " + format + " not supported!");
         }
 
         fromProto(this, r);
@@ -322,7 +320,7 @@ public final class Repository {
 
     private List<Entry> searchForPossibleUpdates(String id) {
 
-        Entry currentVersion = new Entry(id, "", "", "");
+        Entry currentVersion = new Entry(id, "", "", "", 0L);
 
         PluginIdentifier pId = new PluginIdentifier(
                 currentVersion.getName(),

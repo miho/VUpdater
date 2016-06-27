@@ -43,7 +43,7 @@ public class DeltaTest {
     public void testClone() {
 
         // only equal test, since delta is immutable
-        Delta instance = new Delta("pkg-abc@1.2.0", "pkg-abc@1.3.0", "http://nopath/delta.zip");
+        Delta instance = new Delta("pkg-abc@1.2.0", "pkg-abc@1.3.0", "http://nopath/delta.zip", 1024L);
         Delta other = new Delta(instance);
 
         Assert.assertEquals(instance, other);
@@ -54,7 +54,7 @@ public class DeltaTest {
      */
     @Test
     public void testGetFrom() {
-        Delta instance = new Delta("pkg-abc@1.2.0", "pkg-abc@1.3.0", "http://nopath/delta.zip");
+        Delta instance = new Delta("pkg-abc@1.2.0", "pkg-abc@1.3.0", "http://nopath/delta.zip", 1024L);
         String expResult = "pkg-abc@1.2.0";
         String result = instance.getFrom();
         assertEquals(expResult, result);
@@ -66,7 +66,7 @@ public class DeltaTest {
      */
     @Test
     public void testGetTo() {
-        Delta instance = new Delta("pkg-abc@1.2.0", "pkg-abc@1.3.0", "http://nopath/delta.zip");
+        Delta instance = new Delta("pkg-abc@1.2.0", "pkg-abc@1.3.0", "http://nopath/delta.zip", 1024L);
         String expResult = "pkg-abc@1.3.0";
         String result = instance.getTo();
         assertEquals(expResult, result);
@@ -77,7 +77,7 @@ public class DeltaTest {
      */
     @Test
     public void testGetPath() {
-        Delta instance = new Delta("pkg-abc@1.2.0", "pkg-abc@1.3.0", "http://nopath/delta.zip");
+        Delta instance = new Delta("pkg-abc@1.2.0", "pkg-abc@1.3.0", "http://nopath/delta.zip", 1024L);
         String expResult = "http://nopath/delta.zip";
         String result = instance.getPath();
         assertEquals(expResult, result);
@@ -88,9 +88,24 @@ public class DeltaTest {
      */
     @Test
     public void testGetSha1() {
-        Delta instance = new Delta("pkg-abc@1.2.0", "pkg-abc@1.3.0", "http://nopath/delta.zip", "4b8fd1b2b9318cf989634e15af0e460a3bc3791a");
+        Delta instance = new Delta("pkg-abc@1.2.0", "pkg-abc@1.3.0",
+                "http://nopath/delta.zip", 1024L,
+                "4b8fd1b2b9318cf989634e15af0e460a3bc3791a");
         String expResult = "4b8fd1b2b9318cf989634e15af0e460a3bc3791a";
         String result = instance.getSha1();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getSha1 method, of class Delta.
+     */
+    @Test
+    public void testGetSize() {
+        Delta instance = new Delta("pkg-abc@1.2.0", "pkg-abc@1.3.0",
+                "http://nopath/delta.zip", 1024L);
+
+        long expResult = 1024;
+        long result = instance.getSize();
         assertEquals(expResult, result);
     }
 
@@ -107,18 +122,18 @@ public class DeltaTest {
      */
     @Test
     public void testEquals() {
-        Delta d1 = new Delta("pkg-abc@1.2.0", "pkg-abc@1.3.0", "http://nopath/delta.zip");
-        Delta d2 = new Delta("pkg-abc@1.2.0", "pkg-abc@1.3.0", "http://nopath/delta.zipa");
+        Delta d1 = new Delta("pkg-abc@1.2.0", "pkg-abc@1.3.0", "http://nopath/delta.zip", 1024L);
+        Delta d2 = new Delta("pkg-abc@1.2.0", "pkg-abc@1.3.0", "http://nopath/delta.zipa", 1024L);
         assertEquals(d1, d2);
 
-        Delta d3 = new Delta("pkg-abc@1.2.0", "pkg-abc@1.3.0", "http://nopath/delta.zip");
-        Delta d4 = new Delta("pkg-abc@1.2.1", "pkg-abc@1.3.0", "http://nopath/delta.zip");
+        Delta d3 = new Delta("pkg-abc@1.2.0", "pkg-abc@1.3.0", "http://nopath/delta.zip", 1024L);
+        Delta d4 = new Delta("pkg-abc@1.2.1", "pkg-abc@1.3.0", "http://nopath/delta.zip", 1024L);
         assertEquals(d3.equals(d4), false);
 
-        Delta d5 = new Delta("pkg-abc@1.2.0", "pkg-abc@1.3.1", "http://nopath/delta.zip");
-        Delta d6 = new Delta("pkg-abc@1.2.0", "pkg-abc@1.3.0", "http://nopath/delta.zip");
+        Delta d5 = new Delta("pkg-abc@1.2.0", "pkg-abc@1.3.1", "http://nopath/delta.zip", 1024L);
+        Delta d6 = new Delta("pkg-abc@1.2.0", "pkg-abc@1.3.0", "http://nopath/delta.zip", 1024L);
         assertEquals(d5.equals(d6), false);
-        
+
         EqualsVerifier.forClass(Delta.class).verify();
     }
 
@@ -134,7 +149,7 @@ public class DeltaTest {
         String sha1 = "4b8fd1b2b9318cf989634e15af0e460a3bc3791a";
         String asc = "http://nopath/delta.zip.asc";
 
-        Delta d1 = new Delta(from, to, path, sha1);
+        Delta d1 = new Delta(from, to, path, 1024L, sha1);
 
         eu.mihosoft.vrl.vupdater.proto.Delta expResult
                 = eu.mihosoft.vrl.vupdater.proto.Delta.newBuilder().
@@ -156,15 +171,16 @@ public class DeltaTest {
         String from = "pkg-abc@1.2.0";
         String to = "pkg-abc@1.3.0";
         String path = "http://nopath/delta.zip";
+        long size = 1024L;
         String sha1 = "4b8fd1b2b9318cf989634e15af0e460a3bc3791a";
-        String asc = "http://nopath/delta.zip.asc";
 
-        Delta expResult = new Delta(from, to, path, sha1);
+        Delta expResult = new Delta(from, to, path, size, sha1);
         eu.mihosoft.vrl.vupdater.proto.Delta protoRes
                 = eu.mihosoft.vrl.vupdater.proto.Delta.newBuilder().
                 setFrom(from).
                 setTo(to).
                 setPath(path).
+                setSize(size).
                 setSha1(sha1).
                 build();
         Delta result = Delta.fromProto(protoRes);

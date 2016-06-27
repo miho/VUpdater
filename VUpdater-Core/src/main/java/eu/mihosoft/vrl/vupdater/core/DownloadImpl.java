@@ -14,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -310,15 +311,12 @@ class DownloadImpl extends Observable implements Runnable, Download {
     }
 
     static String generateSHA1Sum(File f) {
+        Objects.requireNonNull(f);
         MessageDigest md = null;
         try {
             md = MessageDigest.getInstance("SHA-1");
             return convertToHex(md.digest(fileToByteArray(f)));
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(DownloadImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(DownloadImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchAlgorithmException ex) {
+        } catch (IOException | NoSuchAlgorithmException ex) {
             Logger.getLogger(DownloadImpl.class.getName()).
                     log(Level.SEVERE, null, ex);
         }
@@ -327,6 +325,7 @@ class DownloadImpl extends Observable implements Runnable, Download {
     }
     
     static String generateSHA1Sum(byte[] data) {
+        Objects.requireNonNull(data);
         MessageDigest md = null;
         try {
             md = MessageDigest.getInstance("SHA-1");

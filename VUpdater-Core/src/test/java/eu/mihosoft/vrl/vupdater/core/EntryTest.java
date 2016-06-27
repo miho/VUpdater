@@ -41,15 +41,14 @@ public class EntryTest {
 
     @Test
     public void testClone() {
-        
+
         // only equal test, since entry is immutable
-        
-        Entry instance = new Entry("pkg-abc@1.2.0", "Package ABC", "Descr...", "http://nopath/delta.zip");
+        Entry instance = new Entry("pkg-abc@1.2.0", "Package ABC", "Descr...", "http://nopath/delta.zip", 0L);
         Entry other = new Entry(instance);
 
         Assert.assertEquals(instance, other);
     }
-    
+
     /**
      * Test of getFullName method, of class Entry.
      */
@@ -61,7 +60,7 @@ public class EntryTest {
         String desc = "my description...";
         String path = "http://nopath/mypackage.zip";
 
-        Entry instance = new Entry(id, name, desc, path);
+        Entry instance = new Entry(id, name, desc, path, 0L);
         String expResult = "My Package";
         String result = instance.getFullName();
         assertEquals(expResult, result);
@@ -78,7 +77,7 @@ public class EntryTest {
         String desc = "my description...";
         String path = "http://nopath/mypackage.zip";
 
-        Entry instance = new Entry(id, name, desc, path);
+        Entry instance = new Entry(id, name, desc, path, 0L);
         String expResult = "my-package";
         String result = instance.getName();
         assertEquals(expResult, result);
@@ -94,7 +93,7 @@ public class EntryTest {
         String desc = "my description...";
         String path = "http://nopath/mypackage.zip";
 
-        Entry instance = new Entry(id, name, desc, path);
+        Entry instance = new Entry(id, name, desc, path, 0L);
         String expResult = "1.2.3";
         String result = instance.getVersion();
         assertEquals(expResult, result);
@@ -110,7 +109,7 @@ public class EntryTest {
         String desc = "my description...";
         String path = "http://nopath/mypackage.zip";
 
-        Entry instance = new Entry(id, name, desc, path);
+        Entry instance = new Entry(id, name, desc, path, 0L);
         String expResult = id;
         String result = instance.getId();
         assertEquals(expResult, result);
@@ -126,7 +125,7 @@ public class EntryTest {
         String desc = "my description...";
         String path = "http://nopath/mypackage.zip";
 
-        Entry instance = new Entry(id, name, desc, path);
+        Entry instance = new Entry(id, name, desc, path, 0L);
         String expResult = desc;
         String result = instance.getDesc();
         assertEquals(expResult, result);
@@ -142,11 +141,29 @@ public class EntryTest {
         String desc = "my description...";
         String path = "http://nopath/mypackage.zip";
 
-        Entry instance = new Entry(id, name, desc, path);
+        Entry instance = new Entry(id, name, desc, path, 0L);
 
         String expResult = path;
         String result = instance.getPath();
         assertEquals(expResult, result);
+    }
+    
+        /**
+     * Test of getSha1 method, of class Entry.
+     */
+    @Test
+    public void testGetSize() {
+        String id = "my-package@1.2.3";
+        String name = "My Package";
+        String desc = "my description...";
+        String path = "http://nopath/mypackage.zip";
+        long size   = 1024L;
+
+        Entry instance = new Entry(id, name, desc, path, size);
+        long expResult = size;
+        long result = instance.getSize();
+        assertEquals(expResult, result);
+
     }
 
     /**
@@ -160,7 +177,7 @@ public class EntryTest {
         String path = "http://nopath/mypackage.zip";
         String sha1 = "4b8fd1b2b9318cf989634e15af0e460a3bc3791a";
 
-        Entry instance = new Entry(id, name, desc, path, sha1);
+        Entry instance = new Entry(id, name, desc, path, 0L, sha1);
         String expResult = sha1;
         String result = instance.getSha1();
         assertEquals(expResult, result);
@@ -182,26 +199,26 @@ public class EntryTest {
     public void testEquals() {
 
         Entry e1 = new Entry(
-                "my-id@1.2.3", "my desc", "http://path/pkg.zip",
-                "4b8fd1b2b9318cf989634e15af0e460a3bc3791a",
-                "http://path/pkg.zip.asc");
+                "my-id@1.2.3", "my full name", "my desc",
+                "http://path/pkg.zip", 0L,
+                "4b8fd1b2b9318cf989634e15af0e460a3bc3791a");
 
-//        Entry e2 = new Entry(
-//                "my-id@1.2.3", "my desc1", "http://path/pkg.zipa",
-//                "4b8fd1b2b9318cf989634e15af0e460a3bc3791a5",
-//                "http://path/pkg.zip.ascb");
-//
-//        assertEquals(e1, e2);
+        Entry e2 = new Entry(
+                "my-id@1.2.3", "my full name 1", "my desc 1",
+                "http://path/pkg.zip", 0L,
+                "4b8fd1b2b9318cf989634e15af0e460a3bc3791a");
+
+        assertEquals(e1, e2);
 
         Entry e3 = new Entry(
-                "my-id@1.2.3", "my desc", "http://path/pkg.zip",
-                "4b8fd1b2b9318cf989634e15af0e460a3bc3791a",
-                "http://path/pkg.zip.asc");
+                "my-id@1.2.3", "my full name", "my desc",
+                "http://path/pkg.zip", 0L,
+                "4b8fd1b2b9318cf989634e15af0e460a3bc3791a");
 
         Entry e4 = new Entry(
-                "my-id@1.2.4", "my desc1", "http://path/pkg.zipa",
-                "4b8fd1b2b9318cf989634e15af0e460a3bc3791a5",
-                "http://path/pkg.zip.ascb");
+                "my-id@1.2.4", "my full name", "my desc",
+                "http://path/pkg.abc.zip", 0L,
+                "4b8fd1b2b9318cf989634e15af0e460a3bc3791a");
 
         assertEquals(e3.equals(e4), false);
 
@@ -217,13 +234,15 @@ public class EntryTest {
         String name = "My Package";
         String desc = "my description...";
         String path = "http://nopath/mypackage.zip";
+        long size = 1024L;
         String sha1 = "4b8fd1b2b9318cf989634e15af0e460a3bc3791a";
 
-        Entry instance = new Entry(id, name, desc, path, sha1);
+        Entry instance = new Entry(id, name, desc, path, size, sha1);
 
         eu.mihosoft.vrl.vupdater.proto.Entry expResult
                 = eu.mihosoft.vrl.vupdater.proto.Entry.newBuilder().
-                setId(id).setName(name).setDesc(desc).setPath(path).setSha1(sha1).
+                setId(id).setName(name).setDesc(desc).setPath(path).
+                setSize(size).setSha1(sha1).
                 build();
         eu.mihosoft.vrl.vupdater.proto.Entry result = instance.toProto();
         assertEquals(expResult, result);
@@ -238,14 +257,17 @@ public class EntryTest {
         String name = "My Package";
         String desc = "my description...";
         String path = "http://nopath/mypackage.zip";
+        long size = 1024L;
         String sha1 = "4b8fd1b2b9318cf989634e15af0e460a3bc3791a";
 
         eu.mihosoft.vrl.vupdater.proto.Entry protoE
                 = eu.mihosoft.vrl.vupdater.proto.Entry.newBuilder().
-                setId(id).setName(name).setDesc(desc).setPath(path).setSha1(sha1).
+                setId(id).setName(name).setDesc(desc).setPath(path).
+                setSize(size).
+                setSha1(sha1).
                 build();
 
-        Entry expResult = new Entry(id, name, desc, path, sha1);
+        Entry expResult = new Entry(id, name, desc, path, size, sha1);
         eu.mihosoft.vrl.vupdater.core.Entry result = Entry.fromProto(protoE);
         assertEquals(expResult, result);
     }

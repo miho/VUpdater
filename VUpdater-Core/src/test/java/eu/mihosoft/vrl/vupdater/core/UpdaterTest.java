@@ -49,15 +49,15 @@ public class UpdaterTest {
         Repository instance = new Repository();
         instance.setDescription("This is a description.");
         instance.addEntry(new Entry("vrl-studio@0.4.5.6", "VRL-Studio", "mydesc",
-                "http://vrl-studio.mihosoft.eu/releases/v0.4.5.6/VRL-Studio-Linux.zip",
+                "http://vrl-studio.mihosoft.eu/releases/v0.4.5.6/VRL-Studio-Linux.zip", 150276088L,
                 "48cedb4775d1c4a0cd1ceb05987f4c8ff4113183"));
         instance.addEntry(new Entry("vrl-studio@0.4.5.7", "VRL-Studio", "mydesc",
-                "http://vrl-studio.mihosoft.eu/releases/v0.4.5.7/VRL-Studio-Linux.zip",
+                "http://vrl-studio.mihosoft.eu/releases/v0.4.5.7/VRL-Studio-Linux.zip", 326443980L,
                 "17ca58114de926b9b90521defaf180c5bf460618"));
-        instance.addEntry(new Entry("another-pkg@0.2.5", "Another Package", "mydesc", "path.zip"));
-        instance.addDelta(new Delta("another-pkg@0.2.3", "another-pkg@0.2.4", "path.zip"));
-        instance.addDelta(new Delta("another-pkg@0.2.3", "another-pkg@0.2.5", "path.zip"));
-        instance.addDelta(new Delta("another-pkg@0.2.4", "another-pkg@0.2.5", "path.zip"));
+        instance.addEntry(new Entry("another-pkg@0.2.5", "Another Package", "mydesc", "path.zip", 1024L));
+        instance.addDelta(new Delta("another-pkg@0.2.3", "another-pkg@0.2.4", "path.zip", 1024L));
+        instance.addDelta(new Delta("another-pkg@0.2.3", "another-pkg@0.2.5", "path.zip", 1024L));
+        instance.addDelta(new Delta("another-pkg@0.2.4", "another-pkg@0.2.5", "path.zip", 1024L));
 
         return instance;
     }
@@ -97,8 +97,8 @@ public class UpdaterTest {
         Updater u = new Updater("vrl-studio@0.4.5.6",
                 "https://bintray.com/artifact/download/miho/Ext/repository.vrepo");
 
-        DownloadResult result = u.downloadRepositoryAndVerifySHA1(null, sha1).get(30,TimeUnit.SECONDS);
-        
+        DownloadResult result = u.downloadRepositoryAndVerifySHA1(null, sha1).get(30, TimeUnit.SECONDS);
+
         assertFalse(result.hasASC());
         assertTrue(result.hasSHA1());
         assertTrue(result.isValid());
@@ -211,6 +211,37 @@ public class UpdaterTest {
 
         assertEquals(statusArr[0], Download.COMPLETE);
         assertEquals(progressArr[0], 100.f, 0.01);
+    }
+
+    @Test
+    public void sha1InvalidUsageTest() {
+
+        String sha1
+                = DownloadImpl.generateSHA1Sum(
+                        new File("/some/nonexistent/file.bin"));
+
+        Assert.assertEquals("", sha1);
+
+        Exception ex = null;
+        File f = null;
+        try {
+            DownloadImpl.generateSHA1Sum(f);
+        } catch (NullPointerException e) {
+            ex = e;
+        }
+        
+        Assert.assertNotNull(ex);
+        
+        ex = null;
+        byte[] data = null;
+        try {
+            DownloadImpl.generateSHA1Sum(data);
+        } catch (NullPointerException e) {
+            ex = e;
+        }
+        
+        Assert.assertNotNull(ex);
+
     }
 
 }
