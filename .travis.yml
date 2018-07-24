@@ -6,7 +6,10 @@ addons:
 
 language: java
 install: true
-jdk: oraclejdk8
+jdk: 
+- oraclejdk8
+- oraclejdk9
+- oraclejdk10
 
 env:
   matrix:
